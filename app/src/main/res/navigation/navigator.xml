@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigator"
+    app:startDestination="@id/main_fragment">
+
+    <fragment
+        tools:layout="@layout/fragment_main"
+        android:name="com.example.sream_movies.MainFragment"
+        android:id="@+id/main_fragment"/>
+
+    <fragment
+        tools:layout="@layout/fragment_fullscreen"
+        android:name="com.example.sream_movies.FullScreenFragment"
+        android:id="@+id/fulll_fragment" />
+
+</navigation>
