@@ -17,12 +17,14 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ViewHolder
 
     ArrayList<ParentModel> parentModelList;
     Context context;
-    MoreClickListener moreClickListener;
+    MoreClickListenerInterface moreClickListener;
+    ChildImageListenerInterface childImageListenerInterface;
 
-    public ParentAdapter(ArrayList<ParentModel> parentModelList, Context context, MoreClickListener moreClickListener) {
+    public ParentAdapter(ArrayList<ParentModel> parentModelList, Context context, MoreClickListenerInterface moreClickListener, ChildImageListenerInterface childImageListenerInterface) {
         this.parentModelList = parentModelList;
         this.context = context;
         this.moreClickListener = moreClickListener;
+        this.childImageListenerInterface = childImageListenerInterface;
     }
 
 
@@ -32,7 +34,7 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ViewHolder
         View view = LayoutInflater.from(context).inflate(R.layout.parent,parent,false);
         ViewHolder viewHolder =  new ViewHolder(view);
         viewHolder.more_text.setOnClickListener(view1 -> moreClickListener.onMoreClicked(parentModelList.get(viewHolder.getAdapterPosition()).getList()
-                                        ,viewHolder.title_text.getText().toString()    ));
+                                        ,viewHolder.title_text.getText().toString()));
         return viewHolder;
     }
 
@@ -41,7 +43,7 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ViewHolder
         holder.title_text.setText(parentModelList.get(position).title);
 
         ChildAdapter childAdapter;
-        childAdapter = new ChildAdapter(parentModelList.get(position).getList(), context);
+        childAdapter = new ChildAdapter(parentModelList.get(position).getList(), context,childImageListenerInterface);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
         holder.child_rv.setLayoutManager(linearLayoutManager);
         holder.child_rv.setAdapter(childAdapter);
@@ -53,6 +55,7 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ViewHolder
     public int getItemCount() {
         return parentModelList.size();
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -70,7 +73,7 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ViewHolder
     }
 }
 
-interface MoreClickListener{
+interface MoreClickListenerInterface{
     void onMoreClicked(ArrayList<ChildModel> childModels, String title);
 }
 

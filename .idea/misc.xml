@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/user/AndroidStudioProjects/Newsly/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Newsly/app/src/main/res/layout/activity_news_description.xml" value="0.25" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Newsly/app/src/main/res/layout/child_item.xml" value="0.25" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Newsly/app/src/main/res/layout/parent_full_screen.xml" value="0.25" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Sream_Movies/app/src/main/res/layout/activity_main.xml" value="0.1526268115942029" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Sream_Movies/app/src/main/res/layout/child_item.xml" value="0.1526268115942029" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Sream_Movies/app/src/main/res/layout/fragment_fullscreen.xml" value="0.1526268115942029" />

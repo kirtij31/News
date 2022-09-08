@@ -15,10 +15,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements MoreClickListener{
+public class MainActivity extends AppCompatActivity implements MoreClickListenerInterface, ChildImageListenerInterface{
 
 
-    String url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=4c5644188b9042008babda3162b2aa6e";
+    String news_url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=4c5644188b9042008babda3162b2aa6e";
 
     RecyclerView recyclerView;
 
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements MoreClickListener
         getSupportActionBar().show();
 
         recyclerView = findViewById(R.id.parent_rv);
-        parentAdapter = new ParentAdapter(parentModels, this,this);
+        parentAdapter = new ParentAdapter(parentModels, this,this,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(parentAdapter);
 
@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements MoreClickListener
                for(int i=0;i<articlesArrayList.size();i++){
                  Article articles = articlesArrayList.get(i);
                  String string = articles.getUrlToImage();
-                 ChildModel itemModel = new ChildModel(string);
+                 String description = articles.getContent();
+                 ChildModel itemModel = new ChildModel(string,description);
 
                  Source source = articles.getSource();
                  String name = source.getName();
@@ -102,4 +103,12 @@ public class MainActivity extends AppCompatActivity implements MoreClickListener
         startActivity(intent);
     }
 
+
+    @Override
+    public void onImageClicked(String image_url, String description) {
+        Intent intent = new Intent(MainActivity.this,NewsDescription.class);
+        intent.putExtra("image_url",image_url);
+        intent.putExtra("description",description);
+        startActivity(intent);
+    }
 }
