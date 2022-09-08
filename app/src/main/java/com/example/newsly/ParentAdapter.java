@@ -1,4 +1,4 @@
-package com.example.sream_movies;
+package com.example.newsly;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
