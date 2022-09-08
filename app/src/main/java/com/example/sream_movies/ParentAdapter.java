@@ -1,71 +1,51 @@
 package com.example.sream_movies;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ViewHolder> {
 
     ArrayList<ParentModel> parentModelList;
     Context context;
-    ChildAdapter childAdapter;
+    MoreClickListener moreClickListener;
 
-    public ParentAdapter(ArrayList<ParentModel> parentModelList, Context context) {
+    public ParentAdapter(ArrayList<ParentModel> parentModelList, Context context, MoreClickListener moreClickListener) {
         this.parentModelList = parentModelList;
         this.context = context;
+        this.moreClickListener = moreClickListener;
     }
+
 
     @NonNull
     @Override
-    public ParentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.parent,parent,false);
-        return new ViewHolder(view);
+        ViewHolder viewHolder =  new ViewHolder(view);
+        viewHolder.more_text.setOnClickListener(view1 -> moreClickListener.onMoreClicked(parentModelList.get(viewHolder.getAdapterPosition()).getList()
+                                        ,viewHolder.title_text.getText().toString()    ));
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ParentAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.title_text.setText(parentModelList.get(position).title);
 
-
-        childAdapter = new ChildAdapter(parentModelList.get(position).list,context);
-        holder.child_rv.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false));
+        ChildAdapter childAdapter;
+        childAdapter = new ChildAdapter(parentModelList.get(position).getList(), context);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
+        holder.child_rv.setLayoutManager(linearLayoutManager);
         holder.child_rv.setAdapter(childAdapter);
         childAdapter.notifyDataSetChanged();
-
-
-        holder.more_text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("key",parentModelList.get(position).list);
-                bundle.putString("title",parentModelList.get(position).title);
-
-                FullScreenFragment fullScreenFragment = new FullScreenFragment();
-                fullScreenFragment.setArguments(bundle);
-                FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
-                manager.beginTransaction().replace(R.id.nav_host_fragment,fullScreenFragment).addToBackStack(null).commit();
-
-            }
-        });
-
 
     }
 
@@ -89,3 +69,8 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ViewHolder
         }
     }
 }
+
+interface MoreClickListener{
+    void onMoreClicked(ArrayList<ChildModel> childModels, String title);
+}
+

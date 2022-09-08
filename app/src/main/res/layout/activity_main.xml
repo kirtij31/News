@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,17 +8,10 @@
     tools:context=".MainActivity"
     android:background="@color/black">
 
-    <include
-        layout="@layout/main_activity_fragment"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/parent_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
 
 
 
