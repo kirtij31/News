@@ -1,7 +1,15 @@
 package com.example.newsly;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,8 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements MoreClickListenerInterface, ChildImageListenerInterface{
-
+public class MainActivity extends AppCompatActivity implements MoreClickListenerInterface, ChildImageListenerInterface, ConnectionListener{
 
     String news_url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=4c5644188b9042008babda3162b2aa6e";
 
@@ -27,6 +34,11 @@ public class MainActivity extends AppCompatActivity implements MoreClickListener
     ArrayList<ChildModel> childModels;
     ArrayList<ParentModel> parentModels = new ArrayList<>();
 
+    public  static ProgressBar progressBar;
+    public  static TextView textView;
+
+    BroadcastReceiver broadcastReceiver;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +47,24 @@ public class MainActivity extends AppCompatActivity implements MoreClickListener
 
         getSupportActionBar().show();
 
+        progressBar = findViewById(R.id.progressBar);
+        textView = findViewById(R.id.connectionStatus);
+
         recyclerView = findViewById(R.id.parent_rv);
         parentAdapter = new ParentAdapter(parentModels, this,this,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(parentAdapter);
 
-        fetch();
+        broadcastReceiver = new ConnectionReceiver(this, this);
 
+        registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
     }
 
     public void fetch(){
@@ -110,5 +133,29 @@ public class MainActivity extends AppCompatActivity implements MoreClickListener
         intent.putExtra("image_url",image_url);
         intent.putExtra("description",description);
         startActivity(intent);
+    }
+
+    @Override
+    public void checkConnection() {
+        fetch();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ConnectionReceiver.isNetworkConnected(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ConnectionReceiver.isNetworkConnected(this);
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        ConnectionReceiver.isNetworkConnected(this);
     }
 }
