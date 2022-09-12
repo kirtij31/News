@@ -140,22 +140,23 @@ public class MainActivity extends AppCompatActivity implements MoreClickListener
         fetch();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        ConnectionReceiver.isNetworkConnected(this);
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        ConnectionReceiver.isNetworkConnected(this);
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        ConnectionReceiver.isNetworkConnected(this);
+//
+//    }
+//
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//        ConnectionReceiver.isNetworkConnected(this);
+//    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        ConnectionReceiver.isNetworkConnected(this);
-
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        ConnectionReceiver.isNetworkConnected(this);
-    }
 }
